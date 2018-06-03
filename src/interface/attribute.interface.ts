@@ -25,10 +25,24 @@ export namespace IAttribute {
     }
 
     export interface IShop {
-        elemeName: string;
-        elemeId: number;
+        elemeShopName: string;
+        elemeShopId: number;
         day: string;
         data: IEleme.Shop;
+    }
+
+    export interface MFood extends IFood, Document {
+
+    }
+
+    export interface IFood {
+        elemeShopName: string;
+        elemeShopId: number;
+        elemeFoodId: number;
+        shopId: string;
+        name: string;
+        day: string;
+        data: IEleme.Food;
     }
 
 }

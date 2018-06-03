@@ -30,7 +30,7 @@ export namespace IEleme {
             'icon_name': string,
             'icon_color': string,
         }[];
-        'item_id': string;
+        'item_id': number;
         // 最少购买件数
         'min_purchase': number;
         'limitation': {};

@@ -21,15 +21,6 @@ export class ShopController extends BaseController {
     @Post()
     public async store(@Body(new PipeValidation()) body: CreateShopDto) {
         return await this.shopService.createMany(body);
-
-        // const coordinates = this.shopService.getCoordinatesByPoint(body.latitude, body.longitude, body.deep);
-        // coordinates.subscribe((coordinate) => {
-        //     this.rabbitMqMicro.push({
-        //         latitude: coordinate.latitude,
-        //         longitude: coordinate.longitude,
-        //         deep: body.deep,
-        //     });
-        // });
     }
 
     @UsePipes(new PipeValidation())

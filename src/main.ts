@@ -4,6 +4,7 @@ import { } from './middleware/index';
 import { RabbitMqMicro } from './micro/rabbitmq.micro';
 import * as util from 'util';
 import { Moment } from './common';
+import * as Config from 'config';
 
 // 原生方法注入
 const console_log = console.log;
@@ -17,6 +18,8 @@ console.debug = function dump(...objs: any[]): void {
         console.log(util.inspect(obj, true, 8, true));
     }
 };
+
+const { port } = Config.get('server');
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -32,6 +35,6 @@ async function bootstrap() {
      */
 
     await app.startAllMicroservices();
-    await app.listen(3000);
+    await app.listen(Number(port) || 3000);
 }
 bootstrap();

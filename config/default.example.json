@@ -1,8 +1,18 @@
 {
     "database": {
         "mongodb": {
-            "url": "mongodb://localhost/test"
+            "url": "mongodb://localhost/eleme_data"
         },
         "mysql": {}
+    },
+    "mq": {
+        "rabbitmq": {
+            "host": "amqp://guest:guest@127.0.0.1:5672",
+            "prefix": "",
+            "channel": "eleme_data"
+        }
+    },
+    "eleme":{
+        "cookie":""
     }
 }
