@@ -3,6 +3,6 @@ import { BaseScheme } from './base.scheme';
 import * as mongoose from 'mongoose';
 import { _ } from '../../common';
 
-export const TestScheme = new mongoose.Schema(_.assign(BaseScheme, {
+export const TestScheme = new mongoose.Schema(_.assign({
     name: String,
-}));
+}, BaseScheme));

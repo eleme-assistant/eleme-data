@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { TestService } from '../service/index';
+import { Module, HttpModule } from '@nestjs/common';
+import { TestService, ShopService } from '../service/index';
 import { DaoModule } from './dao.module';
 
 @Module({
-    imports: [DaoModule],
-    providers: [TestService],
-    exports: [TestService],
+    imports: [DaoModule, HttpModule],
+    providers: [TestService, ShopService],
+    exports: [TestService, ShopService],
 })
 
 export class ServiceModule { }

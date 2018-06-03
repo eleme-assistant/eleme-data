@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 // import { TypeormModule } from './typeorm.module';
 import { MongodbModule } from './mongodb.module';
-import { TestDao } from '../dao';
+import { TestDao, ShopDao } from '../dao';
 
 @Module({
     imports: [MongodbModule],
-    providers: [TestDao],
-    exports: [TestDao],
+    providers: [TestDao, ShopDao],
+    exports: [TestDao, ShopDao],
 })
 export class DaoModule { }
