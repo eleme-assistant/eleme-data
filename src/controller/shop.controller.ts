@@ -1,4 +1,4 @@
-import { Get, Post, Controller, Body, UseGuards } from '@nestjs/common';
+import { Get, Post, Controller, Body, UseGuards, UsePipes } from '@nestjs/common';
 import { CreateShopDto } from '../dto/index';
 import { PipeValidation } from '../pipe/index';
 import { BaseController } from './base.controller';
@@ -20,9 +20,19 @@ export class ShopController extends BaseController {
 
     @Post()
     public async store(@Body(new PipeValidation()) body: CreateShopDto) {
-        return this.rabbitMqMicro.push(body);
+        return await this.shopService.createMany(body);
+
+        // const coordinates = this.shopService.getCoordinatesByPoint(body.latitude, body.longitude, body.deep);
+        // coordinates.subscribe((coordinate) => {
+        //     this.rabbitMqMicro.push({
+        //         latitude: coordinate.latitude,
+        //         longitude: coordinate.longitude,
+        //         deep: body.deep,
+        //     });
+        // });
     }
 
+    @UsePipes(new PipeValidation())
     @MessagePattern('create')
     public async microCreateMany(dto: CreateShopDto) {
         return await this.shopService.createMany(dto);

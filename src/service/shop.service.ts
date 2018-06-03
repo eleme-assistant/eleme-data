@@ -2,11 +2,12 @@ import { Injectable, HttpService } from '@nestjs/common';
 import { BaseService } from './base.service';
 import { ShopDao } from '../dao';
 import { CreateShopDto } from '../dto';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { IEleme } from '../interface/eleme.interface';
 import { Moment, _ } from '../common';
 import * as Config from 'config';
+import { Decimal } from 'decimal.js';
 
 @Injectable()
 export class ShopService extends BaseService {
@@ -61,6 +62,46 @@ export class ShopService extends BaseService {
             console.log(`第${count}次, 处理了${shops.length}个店铺`);
             count++;
         } while (!_.isEmpty(shops));
+    }
+
+    public getCoordinatesOfShanghai() {
+        // const latitudeRange = [1, 1];
+        // const longitudeRange = [2, 2];
+    }
+
+    public getCoordinatesByPoint(latitude: number, longitude: number, deep: number = 1) {
+        const per = new Decimal(0.015); // 每3000米换算成大致的经纬度
+        let coordinates: { latitude: number, longitude: number }[] = [];
+        let level = 0;
+
+        function get(la: number, lo: number) {
+            level++;
+            if (level >= Math.pow(9, deep)) return;
+
+            const newLa = new Decimal(la);
+            const newLo = new Decimal(lo);
+
+            const points = [
+                { latitude: newLa.sub(per).toNumber(), longitude: newLo.sub(per).toNumber() },
+                { latitude: newLa.add(per).toNumber(), longitude: newLo.add(per).toNumber() },
+                { latitude: newLa.sub(per).toNumber(), longitude: newLo.add(per).toNumber() },
+                { latitude: newLa.add(per).toNumber(), longitude: newLo.sub(per).toNumber() },
+                { latitude: newLa.toNumber(), longitude: newLo.add(per).toNumber() },
+                { latitude: newLa.toNumber(), longitude: newLo.sub(per).toNumber() },
+                { latitude: newLa.add(per).toNumber(), longitude: newLo.toNumber() },
+                { latitude: newLa.sub(per).toNumber(), longitude: newLo.toNumber() },
+                { latitude: newLa.toNumber(), longitude: newLo.toNumber() },
+            ];
+
+            coordinates = _.union(coordinates, points);
+
+            for (const point of points) {
+                get(point.latitude, point.longitude);
+            }
+        }
+
+        get(latitude, longitude);
+        return from(coordinates);
     }
 
 }

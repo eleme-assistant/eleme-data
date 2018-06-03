@@ -1,5 +1,6 @@
 import { } from '../const/index';
-import { IsString, IsInt, IsIn, IsNumber } from 'class-validator';
+import { IsString, IsInt, IsIn, IsNumber, Max, Min } from 'class-validator';
+import { isNumber } from 'util';
 
 export class CreateShopDto {
 
@@ -8,5 +9,8 @@ export class CreateShopDto {
 
     @IsNumber()
     readonly longitude: number;
+
+    @IsNumber() @Max(10) @Min(1)
+    readonly deep?: number;
 
 }
